@@ -66,6 +66,7 @@ export default defineComponent({
 }
 
 .NavItem {
+  font-size: 1.7rem;
   margin-right: 2vw;
   text-decoration: none;
   color: $white;
@@ -88,5 +89,17 @@ export default defineComponent({
   color: $primaryColor;
   position: relative;
   bottom: -1rem;
+}
+
+@media (max-width: 768px) {
+  .NavItem {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 556px) {
+  .NavItem {
+    font-size: 1.3rem;
+  }
 }
 </style>

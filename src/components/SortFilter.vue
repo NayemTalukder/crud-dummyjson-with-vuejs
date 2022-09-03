@@ -82,53 +82,65 @@ export default defineComponent({
     });
 
     watch(sort, async (newVal, oldValue) => {
-      store.setLoaderOverlay(true);
-      if (
-        oldValue === "" &&
-        store.filter.priceRange.upperLimit === 0 &&
-        store.rawProducts.length === 0
-      )
-        store.setRowProducts(await getAllProducts());
-      store.setFilter({ sortBy: newVal });
-      store.setFilteredProducts(await getData(store.filter, store.rawProducts));
-      store.setProducts(store.filteredProducts.slice(0, 10));
-      store.setLoaderOverlay(false);
+      if (order.value === "Select One") order.value = "Asc";
+      if (newVal !== "") {
+        store.setLoaderOverlay(true);
+        if (
+          oldValue === "" &&
+          store.filter.priceRange.upperLimit === 0 &&
+          store.rawProducts.length === 0
+        )
+          store.setRowProducts(await getAllProducts());
+        store.setFilter({ sortBy: newVal });
+        store.setFilteredProducts(
+          await getData(store.filter, store.rawProducts)
+        );
+        store.setProducts(store.filteredProducts.slice(0, 10));
+        store.setLoaderOverlay(false);
+      }
     });
 
     watch(filter, async (newVal, oldValue) => {
-      store.setLoaderOverlay(true);
-      if (
-        oldValue === "" &&
-        store.filter.sortBy === "" &&
-        store.rawProducts.length === 0
-      )
-        store.setRowProducts(await getAllProducts());
-      const priceRange = {
-        lowerLimit: parseInt(newVal.split(" - ")[0]),
-        upperLimit: parseInt(newVal.split(" - ")[1]),
-      };
-      store.setFilter({ priceRange });
-      store.setFilteredProducts(await getData(store.filter, store.rawProducts));
-      store.setProducts(store.filteredProducts.slice(0, 10));
-      store.setLoaderOverlay(false);
+      if (newVal !== "") {
+        store.setLoaderOverlay(true);
+        if (
+          oldValue === "" &&
+          store.filter.sortBy === "" &&
+          store.rawProducts.length === 0
+        )
+          store.setRowProducts(await getAllProducts());
+        const priceRange = {
+          lowerLimit: parseInt(newVal.split(" - ")[0]),
+          upperLimit: parseInt(newVal.split(" - ")[1]),
+        };
+        store.setFilter({ priceRange });
+        store.setFilteredProducts(
+          await getData(store.filter, store.rawProducts)
+        );
+        store.setProducts(store.filteredProducts.slice(0, 10));
+        store.setLoaderOverlay(false);
+      }
     });
 
-    watch(order, async (newVal) => {
-      store.filteredProducts.reverse();
-      store.setProducts(store.filteredProducts.slice(0, 10));
-      if (newVal === "Desc") store.setFilter({ desc: true });
-      else store.setFilter({ desc: false });
-      store.setLoaderOverlay(false);
+    watch(order, async (newVal, oldValue) => {
+      if (newVal !== "Select One" && oldValue !== "Select One") {
+        store.filteredProducts.reverse();
+        store.setProducts(store.filteredProducts.slice(0, 10));
+        if (newVal === "Desc") store.setFilter({ desc: true });
+        else store.setFilter({ desc: false });
+        store.setLoaderOverlay(false);
+      }
     });
 
     async function onClear() {
       store.setLoaderOverlay(true);
-      store.setLimitReached(false);
       sort.value = "";
       filter.value = "";
-      order.value = "Asc";
+      order.value = "Select One";
+      store.resetFilter();
       store.setProducts(await getProducts());
       store.setLoaderOverlay(false);
+      store.limitReached = false;
     }
 
     return {
@@ -155,8 +167,7 @@ export default defineComponent({
 .OrderContainer {
   @extend %center;
   padding: 2rem 0;
-  // justify-content: flex-start;
-  // width: 30%
+  margin-right: 2rem;
 }
 
 .SortHeading,
@@ -164,7 +175,7 @@ export default defineComponent({
 .OrderHeading {
   @extend %center;
   margin-right: 1rem;
-  font-size: 2rem;
+  font-size: 1.7rem;
 }
 
 .select {
@@ -178,5 +189,21 @@ export default defineComponent({
   margin-left: 1.5rem;
   color: $primaryColor;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .SortHeading,
+  .FilterHeading,
+  .OrderHeading {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 556px) {
+  .SortHeading,
+  .FilterHeading,
+  .OrderHeading {
+    font-size: 1.3rem;
+  }
 }
 </style>

@@ -3,6 +3,25 @@
   font-size: 62.5%;
 }
 
+@media (max-width: 992px) {
+  :root {
+    font-size: 53.12%;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 45.15%;
+  }
+}
+
+@media (max-width: 556px) {
+  :root {
+    font-size: 38.37%;
+  }
+}
+
+
 :root {
   --vt-c-white: #ffffff;
   --vt-c-white-soft: #f8f8f8;

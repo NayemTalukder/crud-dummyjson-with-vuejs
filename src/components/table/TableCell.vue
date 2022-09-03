@@ -55,7 +55,7 @@ import type { PropType } from "vue";
 import { useProductStore } from "../../stores/product";
 import { addItem, getItem, deleteItem } from "../../service";
 import { arrayDeleteByItem, arrayFindObjIndex } from "../../helper";
-import type { product, cartItem } from "../../types";
+import type { product } from "../../types";
 
 export default defineComponent({
   name: "TableCell",

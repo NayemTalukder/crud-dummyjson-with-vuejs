@@ -6,22 +6,22 @@
     <CartModal />
     <OverlayLoader />
     <template #body>
-      <div className="ItemInfo">
+      <div class="ItemInfo">
         <!-- {/* Heading */} -->
-        <div className="HeadingContainer">
-          <div className="Heading">Products</div>
+        <div class="HeadingContainer">
+          <div class="Heading">Products</div>
         </div>
 
         <!-- Sort Filter Section -->
         <SortFilter />
 
         <!-- {/* Item Info List */} -->
-        <div className="ItemInfoListContainer">
+        <div class="ItemInfoListContainer">
           <TableComponent />
         </div>
 
-        <div className="ActionBar">
-          <LoadMoreButton title="Load More" />
+        <div class="ActionBar">
+          <LoadMoreButton title="Load More" :hide="limitReached" />
         </div>
       </div>
     </template>
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onBeforeMount, onUpdated } from "vue";
+import { defineComponent, computed, onBeforeMount } from "vue";
 import { useProductStore } from "../stores/product";
 import { getProducts } from "../service";
 import MainLayout from "../layouts/MainLayout.vue";
@@ -40,7 +40,6 @@ import ProductViewModal from "../components/modal/ProductViewModal.vue";
 import AlertModal from "../components/modal/AlertModal.vue";
 import CartModal from "../components/modal/CartModal.vue";
 import OverlayLoader from "../components/OverlayLoader.vue";
-import Loader from "../components/Loader.vue";
 import SortFilter from "../components/SortFilter.vue";
 
 export default defineComponent({
@@ -54,14 +53,13 @@ export default defineComponent({
     OverlayLoader,
     ProductViewModal,
     SortFilter,
-    Loader,
     CartModal,
   },
   setup() {
     const store = useProductStore();
 
-    onUpdated(() => {
-      console.log("onUpdated :>> ");
+    const limitReached = computed(() => {
+      return store.limitReached;
     });
 
     onBeforeMount(async () => {
@@ -73,7 +71,7 @@ export default defineComponent({
     const products = computed(() => {
       return store.products;
     });
-    return { products };
+    return { products, limitReached };
   },
 });
 </script>
@@ -89,8 +87,6 @@ export default defineComponent({
   margin-top: 5vh;
   min-height: 70vh;
   color: $white;
-  // background-color: $tertiaryColor;
-  // border-radius: .3vw;
 }
 
 .HeadingContainer {

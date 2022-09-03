@@ -1,6 +1,6 @@
-:root {
-  font-size: 62.5%;
-}
+// :root {
+//   font-size: 62.5%;
+// }
 
 p, h1, h2, h3, h4, h5, h6 {
   margin: 0;
@@ -214,7 +214,7 @@ Flexbox Adjustment
 }
 
 .d-none {
-  display: none;
+  display: none !important;
 }
 
 .flex-1 {

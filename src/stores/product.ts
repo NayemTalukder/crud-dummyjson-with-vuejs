@@ -24,35 +24,28 @@ export const useProductStore = defineStore({
   },
   actions: {
     setProducts(value: product[]) {
-      if (!value) return;
       this.products = value;
     },
     setFilteredProducts(value: product[]) {
-      if (!value) return;
       this.filteredProducts = value;
     },
     setRowProducts(value: product[]) {
-      if (!value) return;
       this.rawProducts = value;
     },
     setCart(value: cartItem[]) {
-      if (!value) return;
       this.cart = value;
     },
     setLimitReached(value: boolean) {
-      if (!value) return;
       this.limitReached = value;
     },
     setNewProduct(field: string, value: string | number | string[]) {
       const pair = getFieldValuePair(field, value);
       this.newProduct = { ...this.newProduct, ...pair } as never;
     },
-    setModalState(value: any) {
-      if (!value) return;
+    setModalState(value: object) {
       this.modalState = { ...this.modalState, ...value };
     },
-    setFilter(value: any) {
-      if (!value) return;
+    setFilter(value: object) {
       this.filter = { ...this.filter, ...value };
     },
     setLoader(value: boolean) {
